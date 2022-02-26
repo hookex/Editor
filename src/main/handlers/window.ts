@@ -1,5 +1,5 @@
 import { BrowserWindowConstructorOptions, BrowserWindow } from "electron";
-import { Undefinable } from "../../shared/types";
+import { Nullable, Undefinable } from "../../shared/types";
 
 export interface IWindowDefinition {
 	options: BrowserWindowConstructorOptions;
@@ -8,6 +8,11 @@ export interface IWindowDefinition {
 }
 
 export class WindowsHandler {
+	/**
+	 * Defines the reference to the main window. This reference may be used to store the main window and add tabs to it when supported.
+	 */
+	public static MainWindow: Nullable<BrowserWindow> = null;
+
 	private static _Windows: BrowserWindow[] = [];
 
 	/**
@@ -74,6 +79,8 @@ export class WindowsHandler {
 
 		window.on("closed", () => this._RemoveWindow(window));
 
+		this.MainWindow?.addTabbedWindow?.(window);
+		
 		return window;
 	}
 

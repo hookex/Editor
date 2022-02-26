@@ -155,6 +155,8 @@ export default class EditorApp {
 			
 			if (this._ForceQuit) { app.quit(); }
 		});
+
+		WindowsHandler.MainWindow = this.Window;
 	}
 	
     /**
