@@ -2,9 +2,24 @@ import { BrowserWindowConstructorOptions, BrowserWindow } from "electron";
 import { Nullable, Undefinable } from "../../shared/types";
 
 export interface IWindowDefinition {
-	options: BrowserWindowConstructorOptions;
+	/**
+	 * Defines the Url of the html file to load for the browser window.
+	 */
 	url: string;
+	/**
+	 * Defines wether or not the newly created browser window shoud be added as
+	 * a tab in the main window.
+	 * @platform `darwin`
+	 */
+	tabbed: boolean;
+	/**
+	 * Defines wether or not the newly created browser window is automatically focused.
+	 */
 	autofocus: boolean;
+	/**
+	 * Defines the options of the browser window to created.
+	 */
+	options: BrowserWindowConstructorOptions;
 }
 
 export class WindowsHandler {
@@ -20,7 +35,7 @@ export class WindowsHandler {
 	 * @param definition defines the definition of the window (page url, dimensiosn, etc.)
 	 */
 	public static async CreateWindowOnDemand(definition: IWindowDefinition): Promise<BrowserWindow> {
-		const window = this._CreateWindow(definition.options);
+		const window = this._CreateWindow(definition);
 		await this._SetWindowURL(window, definition.url);
 
 		if (definition.autofocus) {
@@ -71,15 +86,17 @@ export class WindowsHandler {
 	/**
 	 * Creates a new window according to the given options/definitions.
 	 */
-	private static _CreateWindow(options: BrowserWindowConstructorOptions): BrowserWindow {
-		options.backgroundColor = "#fff";
+	private static _CreateWindow(definition: IWindowDefinition): BrowserWindow {
+		definition.options.backgroundColor = "#fff";
 
-		let window = new BrowserWindow(options);
+		let window = new BrowserWindow(definition.options);
 		this._Windows.push(window);
 
 		window.on("closed", () => this._RemoveWindow(window));
 
-		this.MainWindow?.addTabbedWindow?.(window);
+		if (definition.tabbed) {
+			this.MainWindow?.addTabbedWindow?.(window);
+		}
 		
 		return window;
 	}

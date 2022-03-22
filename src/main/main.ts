@@ -129,8 +129,9 @@ export default class EditorApp {
 					allowRunningInsecureContent: false,
 				},
 			},
-			url: "file://" + __dirname + "/../../../html/editor.html",
+			tabbed: false,
 			autofocus: true,
+			url: "file://" + __dirname + "/../../../html/editor.html",
 		});
 		if (isWindowMaximized ?? true) {
 			this.Window.maximize();

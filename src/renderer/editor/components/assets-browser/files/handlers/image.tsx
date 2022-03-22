@@ -65,7 +65,7 @@ export class ImageItemHandler extends AssetsBrowserItemHandler {
 	 * @param ev defines the reference to the event object.
 	 */
 	public onDoubleClick(_: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
-		this.props.editor.addWindowedPlugin("texture-viewer", undefined, this.props.absolutePath);
+		this.props.editor.addWindowedPlugin("texture-viewer", false, undefined, this.props.absolutePath);
 	}
 
 	/**
